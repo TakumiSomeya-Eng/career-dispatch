@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Career Dispatch — Autofill",
+  "version": "1.0.0",
+  "description": "One-click autofill for US job applications. Companion to Career Dispatch.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Career Dispatch",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "autofill": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Autofill the current page with profile data"
+    }
+  }
+}

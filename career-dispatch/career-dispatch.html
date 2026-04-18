@@ -1,0 +1,1912 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&display=swap');
+
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f1e8;
+    --paper-deep: #ebe5d3;
+    --paper-line: #d8d1bd;
+    --accent: #d63f1f;
+    --accent-deep: #a8301a;
+    --gold: #c4962b;
+    --forest: #1f3d2e;
+    --mist: #8a8275;
+    --cream: #faf7ef;
+    --shadow: rgba(10, 10, 10, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body, .app-root {
+    font-family: 'Inter Tight', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app-root {
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(214, 63, 31, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(196, 150, 43, 0.05) 0%, transparent 40%);
+  }
+
+  .masthead {
+    border-bottom: 1px solid var(--ink);
+    padding: 32px 48px 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 32px;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .masthead::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    font-style: italic;
+  }
+
+  .logo .asterisk {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .tagline strong {
+    color: var(--ink);
+    display: block;
+    font-size: 11px;
+  }
+
+  .issue-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--mist);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .nav-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--ink);
+    background: var(--cream);
+    padding: 0 48px;
+    gap: 0;
+  }
+
+  .tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 16px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--mist);
+    border-right: 1px solid var(--paper-line);
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .tab:first-child { border-left: 1px solid var(--paper-line); }
+
+  .tab:hover { color: var(--ink); background: var(--paper-deep); }
+
+  .tab.active {
+    color: var(--ink);
+    background: var(--paper);
+    font-weight: 600;
+  }
+
+  .tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .main-content {
+    padding: 40px 48px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Section Headers */
+  .section-header {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-style: italic;
+  }
+
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    vertical-align: super;
+    margin-right: 8px;
+    font-style: normal;
+  }
+
+  .section-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--cream);
+    border: 1px solid var(--ink);
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  /* Forms */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-grid.full { grid-template-columns: 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mist);
+    font-weight: 600;
+  }
+
+  .field-label .required { color: var(--accent); }
+
+  .field input, .field textarea, .field select {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--paper-line);
+    background: var(--paper);
+    color: var(--ink);
+    transition: border-color 0.15s ease, background 0.15s ease;
+    resize: vertical;
+  }
+
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: none;
+    border-color: var(--ink);
+    background: #fff;
+  }
+
+  .field textarea { min-height: 100px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* Buttons */
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--cream);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--cream);
+  }
+
+  .btn-small { padding: 6px 12px; font-size: 10px; }
+
+  /* Resume List */
+  .resume-list { display: grid; gap: 16px; }
+
+  .resume-card {
+    border: 1px solid var(--ink);
+    background: var(--cream);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+    transition: all 0.15s ease;
+  }
+
+  .resume-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .resume-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .resume-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--mist);
+    text-transform: uppercase;
+  }
+
+  .resume-actions { display: flex; gap: 8px; }
+
+  /* Match Results Table */
+  .match-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cream);
+    border: 1px solid var(--ink);
+    margin-top: 24px;
+  }
+
+  .match-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 14px 16px;
+    background: var(--ink);
+    color: var(--cream);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .match-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--paper-line);
+    vertical-align: top;
+    font-size: 13px;
+  }
+
+  .match-table tr:last-child td { border-bottom: none; }
+
+  .match-table tr:hover td { background: var(--paper-deep); }
+
+  .company-name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .position-title {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .score-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: var(--paper-deep);
+    border: 1px solid var(--ink);
+    letter-spacing: 0.05em;
+  }
+
+  .score-badge.high { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .score-badge.med { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .score-badge.low { background: var(--paper); color: var(--mist); }
+
+  .reason-text {
+    font-size: 12px;
+    color: #3a3a3a;
+    line-height: 1.6;
+    max-width: 360px;
+  }
+
+  .link-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+    display: inline-block;
+    transition: all 0.15s ease;
+  }
+
+  .link-btn:hover { color: var(--accent); border-bottom-width: 2px; }
+
+  /* Controls Bar */
+  .controls-bar {
+    display: flex;
+    gap: 16px;
+    align-items: end;
+    flex-wrap: wrap;
+    padding: 24px;
+    background: var(--cream);
+    border: 1px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    margin-bottom: 32px;
+  }
+
+  .controls-bar .field { flex: 1; min-width: 180px; }
+
+  /* Empty state */
+  .empty-state {
+    padding: 80px 40px;
+    text-align: center;
+    border: 2px dashed var(--paper-line);
+    background: var(--cream);
+  }
+
+  .empty-state h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-style: italic;
+    margin-bottom: 12px;
+    color: var(--mist);
+  }
+
+  .empty-state p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  /* Loading */
+  .loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--paper-line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-container {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .loading-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-top: 16px;
+  }
+
+  /* Autofill Panel */
+  .autofill-panel {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 32px;
+    border: 1px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .autofill-panel h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .autofill-panel p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    line-height: 1.7;
+    opacity: 0.85;
+    margin-bottom: 16px;
+  }
+
+  .bookmarklet-link {
+    display: inline-block;
+    padding: 14px 24px;
+    background: var(--accent);
+    color: var(--cream);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 1px solid var(--cream);
+    cursor: grab;
+    transition: all 0.15s ease;
+  }
+
+  .bookmarklet-link:hover {
+    background: var(--cream);
+    color: var(--accent);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+  }
+
+  .instructions {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-top: 16px;
+    opacity: 0.9;
+  }
+
+  .instructions ol { padding-left: 20px; }
+  .instructions li { margin-bottom: 6px; }
+  .instructions code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.15);
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+
+  /* Notifications */
+  .toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    padding: 16px 24px;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    box-shadow: 4px 4px 0 var(--accent);
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { transform: translateX(120%); }
+    to { transform: translateX(0); }
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+  }
+
+  .modal {
+    background: var(--cream);
+    border: 1px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 36px;
+  }
+
+  .modal h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-style: italic;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--paper-line);
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--ink);
+    background: var(--cream);
+    margin-bottom: 32px;
+  }
+
+  .stat {
+    padding: 24px;
+    border-right: 1px solid var(--paper-line);
+    text-align: center;
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-top: 8px;
+  }
+
+  /* Autofill Code Output */
+  .code-output {
+    background: var(--ink);
+    color: #8fd88b;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 20px;
+    border: 1px solid var(--ink);
+    overflow-x: auto;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .hidden { display: none !important; }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    background: var(--paper-deep);
+    border: 1px solid var(--paper-line);
+    margin-right: 4px;
+  }
+
+  /* API Key setup */
+  .warning-banner {
+    background: var(--gold);
+    border: 1px solid var(--ink);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .warning-banner strong {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 4px;
+  }
+</style>
+
+<div class="app-root">
+  <div class="masthead">
+    <div class="issue-label">
+      VOL.I<br/>
+      EDITION 2026
+    </div>
+    <div class="logo">
+      The Career<span class="asterisk">*</span><br/>
+      <em style="font-size: 0.6em; font-weight: 400;">Dispatch</em>
+    </div>
+    <div class="tagline">
+      <strong>Precision Job Matching</strong>
+      AI-Powered · US Market<br/>
+      Resume → Opportunity
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="tab active" data-tab="match">◉ Match Engine</button>
+    <button class="tab" data-tab="resumes">◉ Resume Library</button>
+    <button class="tab" data-tab="profile">◉ Personal Dossier</button>
+    <button class="tab" data-tab="autofill">◉ Autofill Toolkit</button>
+    <button class="tab" data-tab="tracker">◉ Application Tracker</button>
+  </div>
+
+  <div class="main-content">
+
+    <!-- MATCH ENGINE TAB -->
+    <div id="tab-match" class="tab-content">
+      <div class="section-header">
+        <div class="section-title"><span class="num">I</span>The Match Engine</div>
+        <div class="section-subtitle">Resume → Curated Targets</div>
+      </div>
+
+      <div id="api-key-panel" class="warning-banner">
+        <strong>⚙ Anthropic API Key Required</strong>
+        This tool runs locally. To use AI matching, paste your Anthropic API key below. It's stored only in your browser (localStorage) and sent directly to api.anthropic.com — never to any other server.
+        <div style="margin-top: 12px; display: flex; gap: 8px; align-items: center;">
+          <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." style="flex: 1; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; border: 1px solid var(--ink); background: var(--paper);">
+          <button class="btn btn-small" id="btn-save-api-key">Save Key</button>
+          <button class="btn btn-secondary btn-small" id="btn-clear-api-key">Clear</button>
+        </div>
+        <div id="api-key-status" style="margin-top: 8px; font-size: 11px; color: var(--mist);"></div>
+        <div style="margin-top: 8px; font-size: 11px;">
+          Get one at: <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color: var(--ink); border-bottom: 1px solid var(--accent);">console.anthropic.com/settings/keys</a>
+        </div>
+      </div>
+
+      <div class="controls-bar">
+        <div class="field">
+          <label class="field-label">Select Resume</label>
+          <select id="match-resume-select">
+            <option value="">— choose a resume —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label"># of Targets</label>
+          <select id="match-count">
+            <option value="5">5 companies</option>
+            <option value="10" selected>10 companies</option>
+            <option value="15">15 companies</option>
+            <option value="20">20 companies</option>
+            <option value="25">25 companies</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Industry Focus (optional)</label>
+          <input type="text" id="match-industry" placeholder="e.g. Fintech, AI, Healthcare">
+        </div>
+        <div class="field">
+          <label class="field-label">Location (optional)</label>
+          <input type="text" id="match-location" placeholder="e.g. NYC, Remote, Bay Area">
+        </div>
+        <button class="btn" id="btn-run-match">⟶ Generate Matches</button>
+      </div>
+
+      <div class="controls-bar" style="margin-top: -8px;">
+        <div class="field" style="flex: 2;">
+          <label class="field-label">Target Positions (OR filter — comma-separated, used to build direct job-search links) <span style="color: var(--accent);">★</span></label>
+          <input type="text" id="match-positions" placeholder='e.g. Product Manager, Senior PM, Product Owner, Group PM'>
+        </div>
+        <div class="field" style="flex: 2;">
+          <label class="field-label">Keywords / Conditions (OR filter — free-form qualifiers)</label>
+          <input type="text" id="match-keywords" placeholder='e.g. Japanese speaking, Remote only, Series B+, AI/ML, visa sponsorship'>
+        </div>
+      </div>
+
+      <div id="match-results"></div>
+    </div>
+
+    <!-- RESUME LIBRARY TAB -->
+    <div id="tab-resumes" class="tab-content hidden">
+      <div class="section-header">
+        <div class="section-title"><span class="num">II</span>Resume Library</div>
+        <div class="section-subtitle">Multiple Target Positions</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Add New Resume</div>
+        <div class="card-title">One resume, one target persona</div>
+        <p style="font-size: 13px; color: var(--mist); margin-bottom: 20px;">Create distinct resumes for different target roles (e.g., "Product Manager — B2B SaaS" vs. "Product Manager — Consumer"). The match engine uses each resume's content to find the best-fit companies.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Resume Name <span class="required">*</span></label>
+            <input type="text" id="resume-name" placeholder="e.g. Senior PM — B2B SaaS">
+          </div>
+          <div class="field">
+            <label class="field-label">Target Role</label>
+            <input type="text" id="resume-role" placeholder="e.g. Senior Product Manager">
+          </div>
+        </div>
+
+        <div class="form-grid full" style="margin-top: 16px;">
+          <div class="field">
+            <label class="field-label">Full Resume Text <span class="required">*</span></label>
+            <textarea id="resume-content" rows="12" placeholder="Paste your full resume content here — experience, skills, education, achievements. The more detail, the better the match."></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; gap: 12px;">
+          <button class="btn" id="btn-save-resume">+ Save Resume</button>
+          <button class="btn btn-secondary" id="btn-clear-resume">Clear Form</button>
+        </div>
+      </div>
+
+      <h3 style="font-family: 'Fraunces', serif; font-style: italic; font-size: 28px; margin: 40px 0 16px;">Saved Resumes</h3>
+      <div id="resume-list" class="resume-list"></div>
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div id="tab-profile" class="tab-content hidden">
+      <div class="section-header">
+        <div class="section-title"><span class="num">III</span>Personal Dossier</div>
+        <div class="section-subtitle">Autofill Source Data</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Standard Application Fields</div>
+        <div class="card-title">Fill once, use everywhere</div>
+        <p style="font-size: 13px; color: var(--mist); margin-bottom: 20px;">This information will be used by the Autofill Toolkit to populate application forms on external sites.</p>
+
+        <h4 style="font-family: 'Fraunces', serif; font-size: 18px; margin: 20px 0 12px; font-style: italic;">Contact Information</h4>
+        <div class="form-grid">
+          <div class="field"><label class="field-label">First Name</label><input type="text" data-profile="firstName"></div>
+          <div class="field"><label class="field-label">Last Name</label><input type="text" data-profile="lastName"></div>
+          <div class="field"><label class="field-label">Email</label><input type="email" data-profile="email"></div>
+          <div class="field"><label class="field-label">Phone</label><input type="tel" data-profile="phone"></div>
+          <div class="field"><label class="field-label">Address</label><input type="text" data-profile="address"></div>
+          <div class="field"><label class="field-label">City</label><input type="text" data-profile="city"></div>
+          <div class="field"><label class="field-label">State</label><input type="text" data-profile="state"></div>
+          <div class="field"><label class="field-label">ZIP</label><input type="text" data-profile="zip"></div>
+        </div>
+
+        <h4 style="font-family: 'Fraunces', serif; font-size: 18px; margin: 24px 0 12px; font-style: italic;">Professional Links</h4>
+        <div class="form-grid">
+          <div class="field"><label class="field-label">LinkedIn URL</label><input type="url" data-profile="linkedin" placeholder="https://linkedin.com/in/..."></div>
+          <div class="field"><label class="field-label">GitHub URL</label><input type="url" data-profile="github" placeholder="https://github.com/..."></div>
+          <div class="field"><label class="field-label">Portfolio/Website</label><input type="url" data-profile="portfolio"></div>
+          <div class="field"><label class="field-label">Twitter/X</label><input type="url" data-profile="twitter"></div>
+        </div>
+
+        <h4 style="font-family: 'Fraunces', serif; font-size: 18px; margin: 24px 0 12px; font-style: italic;">Work Authorization</h4>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">US Work Authorization</label>
+            <select data-profile="workAuth">
+              <option value="">— Select —</option>
+              <option value="us_citizen">US Citizen</option>
+              <option value="green_card">Permanent Resident (Green Card)</option>
+              <option value="h1b">H-1B Visa</option>
+              <option value="h1b_transfer">H-1B (requires transfer)</option>
+              <option value="opt">F-1 OPT</option>
+              <option value="stem_opt">F-1 STEM OPT</option>
+              <option value="tn">TN Visa</option>
+              <option value="e3">E-3 Visa</option>
+              <option value="o1">O-1 Visa</option>
+              <option value="no_auth">No US Work Authorization</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Sponsorship Required?</label>
+            <select data-profile="sponsorship">
+              <option value="">— Select —</option>
+              <option value="no">No</option>
+              <option value="now">Yes, now</option>
+              <option value="future">Yes, in the future</option>
+            </select>
+          </div>
+        </div>
+
+        <h4 style="font-family: 'Fraunces', serif; font-size: 18px; margin: 24px 0 12px; font-style: italic;">Demographics (Optional, Voluntary)</h4>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Gender</label>
+            <select data-profile="gender">
+              <option value="">— Prefer not to say —</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="non_binary">Non-binary</option>
+              <option value="decline">Decline to self-identify</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Race/Ethnicity</label>
+            <select data-profile="ethnicity">
+              <option value="">— Prefer not to say —</option>
+              <option value="asian">Asian</option>
+              <option value="black">Black or African American</option>
+              <option value="hispanic">Hispanic or Latino</option>
+              <option value="white">White</option>
+              <option value="native">American Indian or Alaska Native</option>
+              <option value="pacific">Native Hawaiian or Pacific Islander</option>
+              <option value="two_or_more">Two or more races</option>
+              <option value="decline">Decline to self-identify</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Veteran Status</label>
+            <select data-profile="veteran">
+              <option value="">— Prefer not to say —</option>
+              <option value="not_veteran">I am not a veteran</option>
+              <option value="veteran">I am a veteran</option>
+              <option value="decline">Decline to self-identify</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Disability Status</label>
+            <select data-profile="disability">
+              <option value="">— Prefer not to say —</option>
+              <option value="no">No, I do not have a disability</option>
+              <option value="yes">Yes, I have a disability</option>
+              <option value="decline">Decline to self-identify</option>
+            </select>
+          </div>
+        </div>
+
+        <h4 style="font-family: 'Fraunces', serif; font-size: 18px; margin: 24px 0 12px; font-style: italic;">Preferences</h4>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Desired Salary</label>
+            <input type="text" data-profile="salary" placeholder="e.g. $150,000 or Negotiable">
+          </div>
+          <div class="field">
+            <label class="field-label">Earliest Start Date</label>
+            <input type="text" data-profile="startDate" placeholder="e.g. Immediately, 2 weeks notice">
+          </div>
+          <div class="field">
+            <label class="field-label">Willing to Relocate?</label>
+            <select data-profile="relocate">
+              <option value="">— Select —</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="depends">Depends on location</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">How did you hear about us?</label>
+            <input type="text" data-profile="source" placeholder="e.g. LinkedIn, Referral">
+          </div>
+        </div>
+
+        <h4 style="font-family: 'Fraunces', serif; font-size: 18px; margin: 24px 0 12px; font-style: italic;">Additional Information</h4>
+        <div class="form-grid full">
+          <div class="field">
+            <label class="field-label">Referral Name (if any)</label>
+            <input type="text" data-profile="referral">
+          </div>
+          <div class="field">
+            <label class="field-label">Short Bio / Summary</label>
+            <textarea data-profile="bio" rows="3" placeholder="A 2-3 sentence summary often asked for on applications"></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <button class="btn" id="btn-save-profile">✓ Save Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTOFILL TOOLKIT TAB -->
+    <div id="tab-autofill" class="tab-content hidden">
+      <div class="section-header">
+        <div class="section-title"><span class="num">IV</span>Autofill Toolkit</div>
+        <div class="section-subtitle">One-Click Application Filling</div>
+      </div>
+
+      <div class="autofill-panel">
+        <h3>Career Dispatch — Chrome Extension</h3>
+        <p>The browser extension runs on every job application page. Press <code style="background: rgba(255,255,255,0.15); padding: 2px 8px; font-family: 'JetBrains Mono', monospace;">⌘⇧F</code> (Mac) or <code style="background: rgba(255,255,255,0.15); padding: 2px 8px; font-family: 'JetBrains Mono', monospace;">Ctrl+Shift+F</code> (Win/Linux) to autofill, or click the extension icon for manual field mapping.</p>
+
+        <button class="bookmarklet-link" id="btn-export-profile" style="border: 1px solid var(--cream);">⬇ Export Profile (profile.json)</button>
+
+        <div class="instructions">
+          <strong style="font-family: 'Fraunces', serif; font-style: italic; font-size: 18px; font-weight: 600;">Installation:</strong>
+          <ol>
+            <li>Download the extension ZIP from this conversation</li>
+            <li>Unzip to a folder you'll keep (the extension loads from this folder)</li>
+            <li>Open <code>chrome://extensions</code> in Chrome/Edge/Brave</li>
+            <li>Toggle <strong>Developer mode</strong> (top right)</li>
+            <li>Click <strong>Load unpacked</strong> → select the unzipped folder</li>
+            <li>Click the extension's icon → <strong>Import Profile</strong> → select the <code>profile.json</code> you exported above</li>
+            <li>Done. Visit any application page and press <code>⌘⇧F</code> / <code>Ctrl+Shift+F</code></li>
+          </ol>
+          <p style="margin-top: 12px; opacity: 0.75; font-size: 12px;">⚠ Re-export and re-import your profile whenever you update your dossier — the extension stores a local copy.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Extension Features</div>
+        <div class="card-title">What it handles automatically</div>
+        <ul style="font-size: 14px; line-height: 1.9; padding-left: 20px; color: var(--ink);">
+          <li><strong>Smart field detection</strong> — matches labels, placeholders, name, id, aria-label, and ancestor label text via regex patterns</li>
+          <li><strong>React/Vue compatibility</strong> — bypasses synthetic event issues using native setter injection</li>
+          <li><strong>Select/dropdown matching</strong> — intelligently picks the closest option (e.g., "H-1B" matches "H1B Visa (requires sponsorship)")</li>
+          <li><strong>EEO & demographic fields</strong> — handles voluntary self-ID fields on Greenhouse/Lever/Workday</li>
+          <li><strong>Visual confirmation</strong> — filled fields flash yellow, a summary toast shows field count</li>
+          <li><strong>Skips already-filled fields</strong> — non-destructive; won't overwrite your edits</li>
+          <li><strong>Manual picker mode</strong> — click extension icon → pick a specific field to fill individually</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Quick Copy (fallback)</div>
+        <div class="card-title">For fields the extension can't detect</div>
+        <p style="font-size: 13px; color: var(--mist); margin-bottom: 20px;">Click any field below to copy it to your clipboard.</p>
+        <div id="quickcopy-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;"></div>
+      </div>
+    </div>
+
+    <!-- TRACKER TAB -->
+    <div id="tab-tracker" class="tab-content hidden">
+      <div class="section-header">
+        <div class="section-title"><span class="num">V</span>Application Tracker</div>
+        <div class="section-subtitle">Pipeline at a Glance</div>
+      </div>
+
+      <div class="stats-row" id="stats-row">
+        <div class="stat"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Total Saved</div></div>
+        <div class="stat"><div class="stat-value" id="stat-applied">0</div><div class="stat-label">Applied</div></div>
+        <div class="stat"><div class="stat-value" id="stat-interview">0</div><div class="stat-label">Interviewing</div></div>
+        <div class="stat"><div class="stat-value" id="stat-offer">0</div><div class="stat-label">Offers</div></div>
+      </div>
+
+      <div id="tracker-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<script type="module">
+  // ============================================
+  // STATE MANAGEMENT
+  // ============================================
+  const state = {
+    resumes: [],
+    profile: {},
+    savedMatches: [], // tracked applications
+  };
+
+  // ============================================
+  // STORAGE HELPERS (localStorage-based for local file use)
+  // ============================================
+  const STORAGE_PREFIX = 'career_dispatch_';
+
+  async function loadState() {
+    try {
+      const r = localStorage.getItem(STORAGE_PREFIX + 'resumes');
+      if (r) state.resumes = JSON.parse(r);
+    } catch(e) {
+      console.error('Failed to load resumes:', e);
+      state.resumes = [];
+    }
+
+    try {
+      const p = localStorage.getItem(STORAGE_PREFIX + 'profile');
+      if (p) state.profile = JSON.parse(p);
+    } catch(e) {
+      console.error('Failed to load profile:', e);
+      state.profile = {};
+    }
+
+    try {
+      const m = localStorage.getItem(STORAGE_PREFIX + 'saved-matches');
+      if (m) state.savedMatches = JSON.parse(m);
+    } catch(e) {
+      console.error('Failed to load saved matches:', e);
+      state.savedMatches = [];
+    }
+  }
+
+  async function saveResumes() {
+    try {
+      localStorage.setItem(STORAGE_PREFIX + 'resumes', JSON.stringify(state.resumes));
+    } catch(e) {
+      console.error('Failed to save resumes:', e);
+      toast('⚠ Save failed: ' + e.message);
+    }
+  }
+  async function saveProfile() {
+    try {
+      localStorage.setItem(STORAGE_PREFIX + 'profile', JSON.stringify(state.profile));
+    } catch(e) {
+      console.error('Failed to save profile:', e);
+      toast('⚠ Save failed: ' + e.message);
+    }
+  }
+  async function saveTracked() {
+    try {
+      localStorage.setItem(STORAGE_PREFIX + 'saved-matches', JSON.stringify(state.savedMatches));
+    } catch(e) {
+      console.error('Failed to save tracked:', e);
+    }
+  }
+
+  // ============================================
+  // UI HELPERS
+  // ============================================
+  function toast(msg) {
+    const root = document.getElementById('toast-root');
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.textContent = msg;
+    root.appendChild(el);
+    setTimeout(() => el.remove(), 2800);
+  }
+
+  function showModal(html, onMount) {
+    const root = document.getElementById('modal-root');
+    root.innerHTML = `<div class="modal-backdrop"><div class="modal">${html}</div></div>`;
+    const backdrop = root.querySelector('.modal-backdrop');
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+    if (onMount) onMount(root);
+  }
+  function closeModal() {
+    document.getElementById('modal-root').innerHTML = '';
+  }
+  window.closeModal = closeModal;
+
+  // ============================================
+  // TAB NAVIGATION
+  // ============================================
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
+
+      if (btn.dataset.tab === 'tracker') renderTracker();
+      if (btn.dataset.tab === 'autofill') updateAutofillToolkit();
+      if (btn.dataset.tab === 'match') renderMatchSelect();
+    });
+  });
+
+  // ============================================
+  // RESUME MANAGEMENT
+  // ============================================
+  function renderResumeList() {
+    const list = document.getElementById('resume-list');
+    if (state.resumes.length === 0) {
+      list.innerHTML = `<div class="empty-state"><h3>No resumes yet</h3><p>Add your first resume above</p></div>`;
+      return;
+    }
+    list.innerHTML = state.resumes.map(r => `
+      <div class="resume-card" data-id="${r.id}">
+        <div>
+          <h3>${escapeHtml(r.name)}</h3>
+          <div class="resume-meta">${escapeHtml(r.role || 'No target role')} · ${r.content.length} chars · Updated ${new Date(r.updated).toLocaleDateString()}</div>
+        </div>
+        <div class="resume-actions">
+          <button class="btn btn-secondary btn-small" data-action="view" data-id="${r.id}">View</button>
+          <button class="btn btn-secondary btn-small" data-action="edit" data-id="${r.id}">Edit</button>
+          <button class="btn btn-danger btn-small" data-action="delete" data-id="${r.id}">Delete</button>
+        </div>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('button[data-action]').forEach(b => {
+      b.addEventListener('click', () => handleResumeAction(b.dataset.action, b.dataset.id));
+    });
+  }
+
+  function renderMatchSelect() {
+    const sel = document.getElementById('match-resume-select');
+    sel.innerHTML = '<option value="">— choose a resume —</option>' +
+      state.resumes.map(r => `<option value="${r.id}">${escapeHtml(r.name)}</option>`).join('');
+  }
+
+  function handleResumeAction(action, id) {
+    const r = state.resumes.find(x => x.id === id);
+    if (!r) return;
+
+    if (action === 'view') {
+      showModal(`
+        <h2>${escapeHtml(r.name)}</h2>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mist); margin-bottom: 12px; letter-spacing: 0.1em; text-transform: uppercase;">${escapeHtml(r.role || '')}</div>
+        <pre style="white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; background: var(--paper); padding: 16px; border: 1px solid var(--paper-line); max-height: 500px; overflow-y: auto;">${escapeHtml(r.content)}</pre>
+        <div class="modal-actions"><button class="btn" onclick="closeModal()">Close</button></div>
+      `);
+    } else if (action === 'edit') {
+      document.getElementById('resume-name').value = r.name;
+      document.getElementById('resume-role').value = r.role || '';
+      document.getElementById('resume-content').value = r.content;
+      document.getElementById('btn-save-resume').dataset.editing = id;
+      document.getElementById('btn-save-resume').textContent = '✓ Update Resume';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (action === 'delete') {
+      if (confirm('Delete "' + r.name + '"?')) {
+        state.resumes = state.resumes.filter(x => x.id !== id);
+        saveResumes();
+        renderResumeList();
+        renderMatchSelect();
+        toast('Resume deleted');
+      }
+    }
+  }
+
+  document.getElementById('btn-save-resume').addEventListener('click', async () => {
+    const name = document.getElementById('resume-name').value.trim();
+    const role = document.getElementById('resume-role').value.trim();
+    const content = document.getElementById('resume-content').value.trim();
+    const editingId = document.getElementById('btn-save-resume').dataset.editing;
+
+    if (!name || !content) { toast('Name and content required'); return; }
+
+    if (editingId) {
+      const r = state.resumes.find(x => x.id === editingId);
+      if (r) { r.name = name; r.role = role; r.content = content; r.updated = Date.now(); }
+      delete document.getElementById('btn-save-resume').dataset.editing;
+      document.getElementById('btn-save-resume').textContent = '+ Save Resume';
+    } else {
+      state.resumes.push({
+        id: 'r_' + Date.now(),
+        name, role, content,
+        created: Date.now(), updated: Date.now()
+      });
+    }
+
+    await saveResumes();
+    clearResumeForm();
+    renderResumeList();
+    renderMatchSelect();
+    toast(editingId ? 'Resume updated' : 'Resume saved');
+  });
+
+  function clearResumeForm() {
+    document.getElementById('resume-name').value = '';
+    document.getElementById('resume-role').value = '';
+    document.getElementById('resume-content').value = '';
+    delete document.getElementById('btn-save-resume').dataset.editing;
+    document.getElementById('btn-save-resume').textContent = '+ Save Resume';
+  }
+
+  document.getElementById('btn-clear-resume').addEventListener('click', clearResumeForm);
+
+  // ============================================
+  // PROFILE MANAGEMENT
+  // ============================================
+  function loadProfileForm() {
+    document.querySelectorAll('[data-profile]').forEach(el => {
+      const key = el.dataset.profile;
+      if (state.profile[key] != null) el.value = state.profile[key];
+    });
+  }
+
+  document.getElementById('btn-save-profile').addEventListener('click', async () => {
+    const profile = {};
+    document.querySelectorAll('[data-profile]').forEach(el => {
+      profile[el.dataset.profile] = el.value;
+    });
+    state.profile = profile;
+    await saveProfile();
+    updateAutofillToolkit();
+    toast('Profile saved');
+  });
+
+  // ============================================
+  // AI MATCHING — Claude API
+  // ============================================
+  document.getElementById('btn-run-match').addEventListener('click', async () => {
+    const resumeId = document.getElementById('match-resume-select').value;
+    const count = parseInt(document.getElementById('match-count').value);
+    const industry = document.getElementById('match-industry').value.trim();
+    const location = document.getElementById('match-location').value.trim();
+    const positionsRaw = document.getElementById('match-positions').value.trim();
+    const keywords = document.getElementById('match-keywords').value.trim();
+
+    // Parse target positions (comma-separated)
+    const positions = positionsRaw
+      ? positionsRaw.split(',').map(p => p.trim()).filter(Boolean)
+      : [];
+
+    if (!resumeId) { toast('Please select a resume'); return; }
+    const resume = state.resumes.find(r => r.id === resumeId);
+    if (!resume) return;
+
+    const apiKey = localStorage.getItem(STORAGE_PREFIX + 'api_key');
+    if (!apiKey) {
+      toast('⚠ Please save your API key above first');
+      document.getElementById('api-key-input').focus();
+      return;
+    }
+
+    const resultsEl = document.getElementById('match-results');
+    resultsEl.innerHTML = `
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Analyzing resume & searching targets…</div>
+      </div>`;
+
+    try {
+      const prompt = buildMatchPrompt(resume, count, industry, location, positions, keywords);
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true"
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-5-20250929",
+          max_tokens: 8000,
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`API ${response.status}: ${errText.substring(0, 300)}`);
+      }
+      const data = await response.json();
+
+      const text = data.content
+        .filter(c => c.type === 'text')
+        .map(c => c.text)
+        .join('\n');
+
+      const cleaned = text.replace(/```json|```/g, '').trim();
+      let matches;
+      try {
+        matches = JSON.parse(cleaned);
+      } catch (e) {
+        const m = cleaned.match(/\[[\s\S]*\]/);
+        if (m) matches = JSON.parse(m[0]);
+        else throw new Error('Could not parse results: ' + cleaned.substring(0, 200));
+      }
+
+      // Enrich each match with generated search links
+      matches = matches.map(m => ({
+        ...m,
+        searchLinks: buildSearchLinks(m, positions, keywords)
+      }));
+
+      renderMatches(matches, resume);
+    } catch (err) {
+      resultsEl.innerHTML = `
+        <div class="card" style="border-color: var(--accent); box-shadow: 4px 4px 0 var(--accent);">
+          <div class="card-label" style="color: var(--accent);">Error</div>
+          <div class="card-title">Matching failed</div>
+          <p style="font-size: 13px; color: var(--mist); margin-top: 8px;">${escapeHtml(err.message)}</p>
+          <p style="font-size: 12px; margin-top: 12px; color: var(--mist);">Check that your API key is valid and has credits. See console (F12) for details.</p>
+        </div>`;
+      console.error('Match error:', err);
+    }
+  });
+
+  function buildMatchPrompt(resume, count, industry, location, positions, keywords) {
+    let criteria = '';
+    if (industry) criteria += `\n- Industry focus: ${industry}`;
+    if (location) criteria += `\n- Location preference: ${location}`;
+    if (positions.length > 0) {
+      criteria += `\n- Target positions (OR filter — the candidate is open to ANY of these titles): ${positions.join(', ')}`;
+      criteria += `\n  → For each company, pick the target title MOST LIKELY to be a real, currently-open role at that company.`;
+    }
+    if (keywords) {
+      criteria += `\n- Additional qualifiers/keywords (OR filter — bonus points if the company/role satisfies these): ${keywords}`;
+      criteria += `\n  → Give higher matchScore to companies that visibly meet these qualifiers. Mention which qualifier(s) are satisfied in the matchReason and tags.`;
+    }
+
+    return `You are an expert US tech recruiter and career strategist. Analyze the resume below and identify the top ${count} best-fit US companies currently hiring for roles matching this candidate's profile.
+
+RESUME (primary target role: ${resume.role || 'not specified'}):
+"""
+${resume.content}
+"""
+
+SEARCH CRITERIA:${criteria || '\n(none — infer from resume)'}
+
+For EACH company, determine:
+1. The company's official careers domain (e.g., careers.stripe.com, stripe.com/jobs)
+2. Which ATS platform they use, from: "greenhouse", "lever", "ashby", "workday", "icims", "smartrecruiters", "jobvite", "taleo", "eightfold", "own" (their own system), or "unknown"
+3. Their ATS board slug if applicable (e.g., for "boards.greenhouse.io/stripe", slug = "stripe"; for "jobs.lever.co/databricks", slug = "databricks")
+
+Return ONLY a JSON array of ${count} objects. Each object must have these exact fields:
+- "company": company name (string)
+- "position": specific role title that matches best (string — if target positions were provided, use one of them; otherwise infer from resume)
+- "careersUrl": the company's main careers/jobs page URL (string — realistic and likely correct for this company)
+- "atsType": ATS platform identifier (one of the values listed above)
+- "atsSlug": the company's slug on their ATS, or null if unknown/own system
+- "matchScore": an integer 0-100 representing fit quality
+- "matchReason": 1-2 sentence explanation why this is a strong match, explicitly noting if/which qualifiers are met (string, max 200 chars)
+- "tags": array of 2-5 short strings (e.g., ["Remote OK", "Series C", "Fintech", "Japanese market"])
+
+Prioritize companies that:
+1. Actually hire for this profile
+2. Match the candidate's seniority and experience
+3. Have a mix of well-known names AND promising but less-obvious fits
+4. Are US-based or hire in the US
+5. If qualifiers mention things like "Japanese", "bilingual", "APAC", etc. — prioritize companies with Japan offices, Japanese customer base, or international hiring patterns
+
+EXAMPLES of realistic careersUrl + atsType combinations:
+- Stripe → careersUrl: "https://stripe.com/jobs/search", atsType: "greenhouse", atsSlug: "stripe"
+- Databricks → careersUrl: "https://www.databricks.com/company/careers/open-positions", atsType: "greenhouse", atsSlug: "databricks"
+- Airbnb → careersUrl: "https://careers.airbnb.com", atsType: "greenhouse", atsSlug: "airbnb"
+- Notion → careersUrl: "https://www.notion.so/careers", atsType: "ashby", atsSlug: "notion"
+- Ramp → careersUrl: "https://ramp.com/careers", atsType: "ashby", atsSlug: "ramp"
+- Scale AI → careersUrl: "https://scale.com/careers", atsType: "lever", atsSlug: "scaleai"
+- Salesforce → careersUrl: "https://careers.salesforce.com", atsType: "workday", atsSlug: "salesforce"
+- Google → careersUrl: "https://www.google.com/about/careers/applications/jobs/results/", atsType: "own", atsSlug: null
+
+Use accurate atsType/atsSlug when you're confident. If uncertain, set atsType: "unknown" and atsSlug: null — do NOT guess.
+
+Output ONLY the JSON array, no markdown, no prose, no code fences.`;
+  }
+
+  // ============================================
+  // BUILD SEARCH LINKS — generates multiple direct job-search URLs per company
+  // ============================================
+  function buildSearchLinks(match, targetPositions, keywords) {
+    const { company, position, careersUrl, atsType, atsSlug } = match;
+    const links = [];
+
+    // Determine query terms: use all target positions if provided, else the matched position
+    const queryTerms = (targetPositions && targetPositions.length > 0)
+      ? targetPositions
+      : [position];
+
+    // Primary query is the position the AI picked
+    const primaryQuery = encodeURIComponent(position);
+    const orQuery = queryTerms.map(q => `"${q}"`).join(' OR ');
+    const orEncoded = encodeURIComponent(queryTerms.join(' '));
+
+    // 1. ATS-native search links — most reliable, go directly to filterable job list
+    if (atsSlug) {
+      switch ((atsType || '').toLowerCase()) {
+        case 'greenhouse':
+          links.push({
+            label: '🎯 Greenhouse',
+            url: `https://boards.greenhouse.io/${atsSlug}?t=${primaryQuery}`,
+            desc: 'Filtered job list'
+          });
+          break;
+        case 'lever':
+          links.push({
+            label: '🎯 Lever',
+            url: `https://jobs.lever.co/${atsSlug}?query=${primaryQuery}`,
+            desc: 'Filtered job list'
+          });
+          break;
+        case 'ashby':
+          links.push({
+            label: '🎯 Ashby',
+            url: `https://jobs.ashbyhq.com/${atsSlug}?query=${primaryQuery}`,
+            desc: 'Filtered job list'
+          });
+          break;
+        case 'workday':
+          links.push({
+            label: '🎯 Workday',
+            url: `https://${atsSlug}.wd1.myworkdayjobs.com/en-US/External?q=${primaryQuery}`,
+            desc: 'Filtered (may need adjustment)'
+          });
+          break;
+        case 'smartrecruiters':
+          links.push({
+            label: '🎯 SmartRecruiters',
+            url: `https://careers.smartrecruiters.com/${atsSlug}?keyword=${primaryQuery}`,
+            desc: 'Filtered job list'
+          });
+          break;
+        case 'jobvite':
+          links.push({
+            label: '🎯 Jobvite',
+            url: `https://jobs.jobvite.com/${atsSlug}/search?q=${primaryQuery}`,
+            desc: 'Filtered job list'
+          });
+          break;
+        case 'icims':
+          // iCIMS URLs vary; no reliable direct search
+          break;
+      }
+    }
+
+    // 2. Google site-search — the most powerful for direct job page discovery
+    // Extracts domain from careersUrl
+    let domain = '';
+    try {
+      if (careersUrl) {
+        const u = new URL(careersUrl);
+        domain = u.hostname;
+      }
+    } catch(e) { /* ignore */ }
+
+    // Build Google query: site:domain + (title1 OR title2) + optional keywords
+    const googleTerms = [];
+    if (domain) googleTerms.push(`site:${domain}`);
+    // Also scope to ATS domain if known and different
+    const atsDomain = getAtsDomain(atsType, atsSlug);
+    if (atsDomain && atsDomain !== domain) {
+      googleTerms[googleTerms.length - 1] = `(site:${domain} OR site:${atsDomain})`;
+    } else if (!domain && atsDomain) {
+      googleTerms.push(`site:${atsDomain}`);
+    }
+    googleTerms.push(`(${orQuery})`);
+    if (keywords) googleTerms.push(keywords);
+
+    links.push({
+      label: '🔎 Google Jobs',
+      url: `https://www.google.com/search?q=${encodeURIComponent(googleTerms.join(' '))}`,
+      desc: 'Site-scoped search'
+    });
+
+    // 3. LinkedIn job search (company + position)
+    const linkedinQuery = new URLSearchParams({
+      keywords: queryTerms.join(' OR '),
+      f_C: '', // we don't have LinkedIn company IDs, but keyword search by company name works
+    });
+    links.push({
+      label: '💼 LinkedIn',
+      url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(company + ' ' + queryTerms[0])}`,
+      desc: 'LinkedIn Jobs'
+    });
+
+    // 4. Careers page fallback (always include)
+    if (careersUrl) {
+      links.push({
+        label: '🏠 Careers Page',
+        url: careersUrl,
+        desc: 'Company careers home'
+      });
+    }
+
+    return links;
+  }
+
+  function getAtsDomain(atsType, atsSlug) {
+    if (!atsSlug) return '';
+    switch ((atsType || '').toLowerCase()) {
+      case 'greenhouse': return 'boards.greenhouse.io';
+      case 'lever': return 'jobs.lever.co';
+      case 'ashby': return 'jobs.ashbyhq.com';
+      case 'workday': return 'myworkdayjobs.com';
+      case 'smartrecruiters': return 'careers.smartrecruiters.com';
+      case 'jobvite': return 'jobs.jobvite.com';
+      case 'icims': return 'icims.com';
+      default: return '';
+    }
+  }
+
+  function renderMatches(matches, resume) {
+    if (!Array.isArray(matches) || matches.length === 0) {
+      document.getElementById('match-results').innerHTML = `<div class="empty-state"><h3>No matches returned</h3></div>`;
+      return;
+    }
+
+    const rows = matches.map((m, i) => {
+      const scoreClass = m.matchScore >= 85 ? 'high' : m.matchScore >= 70 ? 'med' : 'low';
+      const tags = (m.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+      const linksHtml = (m.searchLinks || []).map(link => `
+        <a href="${escapeAttr(link.url)}" target="_blank" rel="noopener" class="link-btn" title="${escapeAttr(link.desc)}" style="display: block; margin-bottom: 4px;">
+          ${escapeHtml(link.label)}
+        </a>`).join('');
+      const atsBadge = m.atsType && m.atsType !== 'unknown'
+        ? `<span class="tag" style="background: var(--forest); color: var(--cream); border-color: var(--forest);">${escapeHtml(m.atsType)}</span>`
+        : '';
+      return `
+        <tr>
+          <td><span class="score-badge ${scoreClass}">${m.matchScore ?? '—'}</span></td>
+          <td>
+            <div class="company-name">${escapeHtml(m.company)}</div>
+            <div style="margin-top: 4px;">${atsBadge}${tags}</div>
+          </td>
+          <td><span class="position-title">${escapeHtml(m.position)}</span></td>
+          <td><div class="reason-text">${escapeHtml(m.matchReason)}</div></td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 140px;">
+              ${linksHtml}
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-small btn-secondary" data-save-idx="${i}">+ Track</button>
+          </td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('match-results').innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
+        <h3 style="font-family: 'Fraunces', serif; font-style: italic; font-size: 28px;">
+          ${matches.length} curated targets for <em>${escapeHtml(resume.name)}</em>
+        </h3>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary btn-small" id="btn-open-all-google">⇥ Open All Google Searches</button>
+          <button class="btn btn-secondary btn-small" id="btn-export-csv">⬇ Export CSV</button>
+        </div>
+      </div>
+      <div style="padding: 12px 16px; background: var(--cream); border: 1px solid var(--paper-line); font-size: 12px; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;">
+        <strong style="color: var(--accent);">TIP:</strong> 🎯 = ATS-native filter (most reliable) · 🔎 = Google site-search (finds specific JDs) · 💼 = LinkedIn · 🏠 = Careers home
+      </div>
+      <table class="match-table">
+        <thead>
+          <tr>
+            <th style="width: 60px;">Score</th>
+            <th style="width: 200px;">Company</th>
+            <th style="width: 180px;">Matched Position</th>
+            <th>Why it matches</th>
+            <th style="width: 160px;">Job Search Links</th>
+            <th style="width: 80px;">Save</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+
+    document.getElementById('btn-export-csv').addEventListener('click', () => exportCsv(matches, resume));
+
+    document.getElementById('btn-open-all-google').addEventListener('click', () => {
+      const googleLinks = matches
+        .map(m => (m.searchLinks || []).find(l => l.label.includes('Google')))
+        .filter(Boolean);
+      if (googleLinks.length === 0) { toast('No Google links'); return; }
+      if (!confirm(`Open ${googleLinks.length} Google searches in new tabs? Your browser may block some.`)) return;
+      googleLinks.forEach((l, i) => setTimeout(() => window.open(l.url, '_blank'), i * 150));
+    });
+
+    document.querySelectorAll('button[data-save-idx]').forEach(b => {
+      b.addEventListener('click', () => {
+        const idx = parseInt(b.dataset.saveIdx);
+        const m = matches[idx];
+        const googleLink = (m.searchLinks || []).find(l => l.label.includes('Google'));
+        const atsLink = (m.searchLinks || []).find(l => l.label.includes('🎯'));
+        state.savedMatches.push({
+          id: 't_' + Date.now() + '_' + idx,
+          company: m.company,
+          position: m.position,
+          careersUrl: m.careersUrl,
+          applyUrl: (atsLink && atsLink.url) || (googleLink && googleLink.url) || m.careersUrl,
+          searchLinks: m.searchLinks,
+          matchScore: m.matchScore,
+          resumeName: resume.name,
+          status: 'saved',
+          savedAt: Date.now(),
+          notes: ''
+        });
+        saveTracked();
+        toast('Added to tracker');
+        b.textContent = '✓ Saved';
+        b.disabled = true;
+      });
+    });
+  }
+
+  function exportCsv(matches, resume) {
+    const headers = ['Score', 'Company', 'Position', 'ATS', 'Careers URL', 'ATS Direct Search', 'Google Search', 'LinkedIn', 'Tags', 'Reason'];
+    const rows = matches.map(m => {
+      const links = m.searchLinks || [];
+      const ats = links.find(l => l.label.includes('🎯'));
+      const google = links.find(l => l.label.includes('Google'));
+      const linkedin = links.find(l => l.label.includes('LinkedIn'));
+      return [
+        m.matchScore,
+        m.company,
+        m.position,
+        m.atsType || '',
+        m.careersUrl || '',
+        ats ? ats.url : '',
+        google ? google.url : '',
+        linkedin ? linkedin.url : '',
+        (m.tags || []).join(' | '),
+        m.matchReason
+      ];
+    });
+    const csv = [headers, ...rows].map(r =>
+      r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }); // BOM for Excel
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `matches-${resume.name.replace(/\s+/g, '-')}-${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ============================================
+  // AUTOFILL TOOLKIT
+  // ============================================
+
+  function updateAutofillToolkit() {
+    // Profile export button
+    const exportBtn = document.getElementById('btn-export-profile');
+    if (exportBtn) {
+      exportBtn.onclick = () => {
+        const data = JSON.stringify(state.profile, null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'profile.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        toast('Profile exported');
+      };
+    }
+
+    // Quick-copy grid
+    const qg = document.getElementById('quickcopy-grid');
+    if (!qg) return;
+    const fields = [
+      ['First Name', 'firstName'], ['Last Name', 'lastName'],
+      ['Email', 'email'], ['Phone', 'phone'],
+      ['Address', 'address'], ['City', 'city'], ['State', 'state'], ['ZIP', 'zip'],
+      ['LinkedIn', 'linkedin'], ['GitHub', 'github'], ['Portfolio', 'portfolio'],
+      ['Salary', 'salary'], ['Start Date', 'startDate'],
+      ['Referral', 'referral'], ['Bio', 'bio']
+    ];
+    qg.innerHTML = fields.map(([label, key]) => {
+      const val = state.profile[key];
+      if (!val) return '';
+      return `<button class="btn btn-secondary btn-small" style="justify-content: space-between; width: 100%;" data-copy="${escapeAttr(val)}">
+        <span style="text-transform: uppercase;">${label}</span>
+        <span style="opacity: 0.6;">⧉</span>
+      </button>`;
+    }).filter(Boolean).join('');
+
+    qg.querySelectorAll('[data-copy]').forEach(b => {
+      b.addEventListener('click', () => {
+        navigator.clipboard.writeText(b.dataset.copy);
+        const orig = b.innerHTML;
+        b.innerHTML = '<span>✓ Copied</span>';
+        setTimeout(() => { b.innerHTML = orig; }, 1200);
+      });
+    });
+  }
+
+  // ============================================
+  // APPLICATION TRACKER
+  // ============================================
+  function renderTracker() {
+    const list = document.getElementById('tracker-list');
+    const total = state.savedMatches.length;
+    const applied = state.savedMatches.filter(m => ['applied','interview','offer'].includes(m.status)).length;
+    const interview = state.savedMatches.filter(m => m.status === 'interview').length;
+    const offer = state.savedMatches.filter(m => m.status === 'offer').length;
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-applied').textContent = applied;
+    document.getElementById('stat-interview').textContent = interview;
+    document.getElementById('stat-offer').textContent = offer;
+
+    if (total === 0) {
+      list.innerHTML = `<div class="empty-state"><h3>No tracked applications yet</h3><p>Save matches from the Match Engine tab</p></div>`;
+      return;
+    }
+
+    const statusColors = {
+      saved: { bg: 'var(--paper-deep)', fg: 'var(--ink)' },
+      applied: { bg: 'var(--gold)', fg: 'var(--ink)' },
+      interview: { bg: 'var(--forest)', fg: 'var(--cream)' },
+      offer: { bg: 'var(--accent)', fg: 'var(--cream)' },
+      rejected: { bg: 'var(--mist)', fg: 'var(--cream)' }
+    };
+
+    list.innerHTML = `
+      <table class="match-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Position</th>
+            <th>Resume Used</th>
+            <th>Status</th>
+            <th>Saved</th>
+            <th>Links</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${state.savedMatches.map(m => {
+            const sc = statusColors[m.status] || statusColors.saved;
+            return `
+              <tr>
+                <td><div class="company-name">${escapeHtml(m.company)}</div></td>
+                <td>${escapeHtml(m.position)}</td>
+                <td style="font-size: 11px; color: var(--mist);">${escapeHtml(m.resumeName)}</td>
+                <td>
+                  <select data-status-id="${m.id}" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 4px 8px; text-transform: uppercase; background: ${sc.bg}; color: ${sc.fg}; border: 1px solid var(--ink);">
+                    <option value="saved" ${m.status==='saved'?'selected':''}>Saved</option>
+                    <option value="applied" ${m.status==='applied'?'selected':''}>Applied</option>
+                    <option value="interview" ${m.status==='interview'?'selected':''}>Interview</option>
+                    <option value="offer" ${m.status==='offer'?'selected':''}>Offer</option>
+                    <option value="rejected" ${m.status==='rejected'?'selected':''}>Rejected</option>
+                  </select>
+                </td>
+                <td style="font-size: 11px; color: var(--mist);">${new Date(m.savedAt).toLocaleDateString()}</td>
+                <td>
+                  <div style="display: flex; flex-direction: column; gap: 2px; min-width: 120px;">
+                    ${(m.searchLinks || []).map(l => `<a href="${escapeAttr(l.url)}" target="_blank" rel="noopener" class="link-btn" style="font-size: 9px;">${escapeHtml(l.label)}</a>`).join('')}
+                    ${(!m.searchLinks || m.searchLinks.length === 0) ? `<a href="${escapeAttr(m.applyUrl || m.careersUrl)}" target="_blank" rel="noopener" class="link-btn">Apply →</a>` : ''}
+                  </div>
+                </td>
+                <td><button class="btn btn-danger btn-small" data-remove-id="${m.id}">✕</button></td>
+              </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`;
+
+    list.querySelectorAll('[data-status-id]').forEach(s => {
+      s.addEventListener('change', () => {
+        const m = state.savedMatches.find(x => x.id === s.dataset.statusId);
+        if (m) { m.status = s.value; saveTracked(); renderTracker(); }
+      });
+    });
+    list.querySelectorAll('[data-remove-id]').forEach(b => {
+      b.addEventListener('click', () => {
+        if (confirm('Remove from tracker?')) {
+          state.savedMatches = state.savedMatches.filter(x => x.id !== b.dataset.removeId);
+          saveTracked();
+          renderTracker();
+        }
+      });
+    });
+  }
+
+  // ============================================
+  // UTILS
+  // ============================================
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+  function escapeAttr(str) {
+    return escapeHtml(str).replace(/\n/g, ' ');
+  }
+
+  // ============================================
+  // API KEY MANAGEMENT
+  // ============================================
+  function updateApiKeyStatus() {
+    const input = document.getElementById('api-key-input');
+    const statusEl = document.getElementById('api-key-status');
+    const existing = localStorage.getItem(STORAGE_PREFIX + 'api_key');
+    if (existing) {
+      const masked = existing.substring(0, 12) + '•••••••' + existing.substring(existing.length - 4);
+      statusEl.innerHTML = `<span style="color: var(--forest); font-weight: 600;">✓ Key saved:</span> <code style="font-family: 'JetBrains Mono', monospace;">${masked}</code>`;
+      input.placeholder = '(key saved — enter new one to replace)';
+      input.value = '';
+    } else {
+      statusEl.innerHTML = '<span style="color: var(--accent);">⚠ No key saved yet — AI matching disabled</span>';
+    }
+  }
+
+  function initApiKeyUI() {
+    document.getElementById('btn-save-api-key').addEventListener('click', () => {
+      const val = document.getElementById('api-key-input').value.trim();
+      if (!val) { toast('Please paste a key'); return; }
+      if (!val.startsWith('sk-ant-')) {
+        if (!confirm('This doesn\'t look like an Anthropic key. Save anyway?')) return;
+      }
+      localStorage.setItem(STORAGE_PREFIX + 'api_key', val);
+      updateApiKeyStatus();
+      toast('API key saved');
+    });
+
+    document.getElementById('btn-clear-api-key').addEventListener('click', () => {
+      if (!confirm('Remove saved API key?')) return;
+      localStorage.removeItem(STORAGE_PREFIX + 'api_key');
+      updateApiKeyStatus();
+      toast('API key cleared');
+    });
+
+    // Allow pressing Enter to save
+    document.getElementById('api-key-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btn-save-api-key').click();
+      }
+    });
+  }
+
+  // ============================================
+  // BOOT
+  // ============================================
+  (async function init() {
+    await loadState();
+    renderResumeList();
+    renderMatchSelect();
+    loadProfileForm();
+    updateAutofillToolkit();
+    initApiKeyUI();
+    updateApiKeyStatus();
+  })();
+</script>

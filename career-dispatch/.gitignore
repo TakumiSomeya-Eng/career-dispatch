@@ -1,0 +1,39 @@
+# Personal data — NEVER commit these
+profile.json
+*.profile.json
+resumes.json
+*-resumes.json
+saved-matches.json
+api-key.txt
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node/build artifacts (in case contributors add tooling later)
+node_modules/
+dist/
+build/
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+
+# Packaged releases
+*.zip
+
+# Screenshots folder (optional — remove this line if you want to commit screenshots)
+# docs/screenshots/*
