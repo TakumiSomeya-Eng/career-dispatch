@@ -1550,6 +1550,54 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
       });
     }
 
+    // 5. RECRUITER OUTREACH — LinkedIn people searches for direct contact
+    // LinkedIn people search URL: /search/results/people/?keywords=...&origin=FACETED_SEARCH
+    // Since we don't have LinkedIn's internal company IDs, we combine company name with role keywords
+    // This yields high-quality results when the user is logged into LinkedIn
+    const encCompany = encodeURIComponent(`"${company}"`);
+
+    // 5a. Technical Recruiter search (most common outreach target)
+    const techRecruiterQuery = encodeURIComponent(
+      `("technical recruiter" OR "tech recruiter" OR "engineering recruiter") ${company}`
+    );
+    links.push({
+      label: '👤 Recruiter',
+      url: `https://www.linkedin.com/search/results/people/?keywords=${techRecruiterQuery}&origin=GLOBAL_SEARCH_HEADER`,
+      desc: 'LinkedIn: Tech Recruiters at company'
+    });
+
+    // 5b. Sourcer / Recruiting Coordinator (often first point of contact)
+    const sourcerQuery = encodeURIComponent(
+      `("sourcer" OR "recruiting coordinator" OR "talent acquisition") ${company}`
+    );
+    links.push({
+      label: '👥 Sourcer',
+      url: `https://www.linkedin.com/search/results/people/?keywords=${sourcerQuery}&origin=GLOBAL_SEARCH_HEADER`,
+      desc: 'LinkedIn: Sourcers & TA at company'
+    });
+
+    // 5c. Hiring Manager / Engineering leadership (decision-makers for technical roles)
+    // Use position context to infer appropriate title level
+    const posLower = (position || '').toLowerCase();
+    let hiringMgrTitles;
+    if (posLower.includes('engineer') || posLower.includes('developer') || posLower.includes('swe')) {
+      hiringMgrTitles = '("engineering manager" OR "director of engineering" OR "VP engineering" OR "head of engineering")';
+    } else if (posLower.includes('product') || posLower.includes('pm')) {
+      hiringMgrTitles = '("head of product" OR "director of product" OR "VP product" OR "group product manager")';
+    } else if (posLower.includes('design')) {
+      hiringMgrTitles = '("design manager" OR "head of design" OR "director of design")';
+    } else if (posLower.includes('data') || posLower.includes('ml') || posLower.includes('ai')) {
+      hiringMgrTitles = '("head of data" OR "director of data" OR "ML manager" OR "head of AI")';
+    } else {
+      hiringMgrTitles = '("hiring manager" OR "director" OR "VP" OR "head of")';
+    }
+    const hiringMgrQuery = encodeURIComponent(`${hiringMgrTitles} ${company}`);
+    links.push({
+      label: '🎖 Hiring Mgr',
+      url: `https://www.linkedin.com/search/results/people/?keywords=${hiringMgrQuery}&origin=GLOBAL_SEARCH_HEADER`,
+      desc: 'LinkedIn: Likely hiring managers'
+    });
+
     return links;
   }
 
@@ -1576,10 +1624,27 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
     const rows = matches.map((m, i) => {
       const scoreClass = m.matchScore >= 85 ? 'high' : m.matchScore >= 70 ? 'med' : 'low';
       const tags = (m.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-      const linksHtml = (m.searchLinks || []).map(link => `
+
+      // Separate links into Job Search vs Recruiter Outreach categories
+      const allLinks = m.searchLinks || [];
+      const jobLinks = allLinks.filter(l =>
+        l.label.includes('🎯') || l.label.includes('🔎') ||
+        l.label.includes('💼') || l.label.includes('🏠')
+      );
+      const recruiterLinks = allLinks.filter(l =>
+        l.label.includes('👤') || l.label.includes('👥') || l.label.includes('🎖')
+      );
+
+      const jobLinksHtml = jobLinks.map(link => `
         <a href="${escapeAttr(link.url)}" target="_blank" rel="noopener" class="link-btn" title="${escapeAttr(link.desc)}" style="display: block; margin-bottom: 4px;">
           ${escapeHtml(link.label)}
         </a>`).join('');
+
+      const recruiterLinksHtml = recruiterLinks.map(link => `
+        <a href="${escapeAttr(link.url)}" target="_blank" rel="noopener" class="link-btn" title="${escapeAttr(link.desc)}" style="display: block; margin-bottom: 4px;">
+          ${escapeHtml(link.label)}
+        </a>`).join('');
+
       const atsBadge = m.atsType && m.atsType !== 'unknown'
         ? `<span class="tag" style="background: var(--forest); color: var(--cream); border-color: var(--forest);">${escapeHtml(m.atsType)}</span>`
         : '';
@@ -1594,7 +1659,12 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
           <td><div class="reason-text">${escapeHtml(m.matchReason)}</div></td>
           <td>
             <div style="display: flex; flex-direction: column; gap: 2px; min-width: 140px;">
-              ${linksHtml}
+              ${jobLinksHtml}
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 130px;">
+              ${recruiterLinksHtml}
             </div>
           </td>
           <td>
@@ -1613,18 +1683,20 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
           <button class="btn btn-secondary btn-small" id="btn-export-csv">⬇ Export CSV</button>
         </div>
       </div>
-      <div style="padding: 12px 16px; background: var(--cream); border: 1px solid var(--paper-line); font-size: 12px; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;">
-        <strong style="color: var(--accent);">TIP:</strong> 🎯 = ATS-native filter (most reliable) · 🔎 = Google site-search (finds specific JDs) · 💼 = LinkedIn · 🏠 = Careers home
+      <div style="padding: 12px 16px; background: var(--cream); border: 1px solid var(--paper-line); font-size: 12px; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; line-height: 1.8;">
+        <div><strong style="color: var(--accent);">JOBS:</strong> 🎯 ATS-native filter · 🔎 Google site-search · 💼 LinkedIn Jobs · 🏠 Careers home</div>
+        <div><strong style="color: var(--accent);">REACH OUT:</strong> 👤 Tech Recruiters · 👥 Sourcers / TA · 🎖 Hiring Managers <span style="opacity: 0.6;">(opens LinkedIn people search — login required)</span></div>
       </div>
       <table class="match-table">
         <thead>
           <tr>
             <th style="width: 60px;">Score</th>
-            <th style="width: 200px;">Company</th>
-            <th style="width: 180px;">Matched Position</th>
+            <th style="width: 180px;">Company</th>
+            <th style="width: 160px;">Matched Position</th>
             <th>Why it matches</th>
-            <th style="width: 160px;">Job Search Links</th>
-            <th style="width: 80px;">Save</th>
+            <th style="width: 150px;">Job Search</th>
+            <th style="width: 140px;">Recruiter Outreach</th>
+            <th style="width: 70px;">Save</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -1669,12 +1741,15 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
   }
 
   function exportCsv(matches, resume) {
-    const headers = ['Score', 'Company', 'Position', 'ATS', 'Careers URL', 'ATS Direct Search', 'Google Search', 'LinkedIn', 'Tags', 'Reason'];
+    const headers = ['Score', 'Company', 'Position', 'ATS', 'Careers URL', 'ATS Direct Search', 'Google Search', 'LinkedIn Jobs', 'Tech Recruiter Search', 'Sourcer Search', 'Hiring Manager Search', 'Tags', 'Reason'];
     const rows = matches.map(m => {
       const links = m.searchLinks || [];
       const ats = links.find(l => l.label.includes('🎯'));
       const google = links.find(l => l.label.includes('Google'));
-      const linkedin = links.find(l => l.label.includes('LinkedIn'));
+      const linkedinJobs = links.find(l => l.label.includes('💼'));
+      const techRec = links.find(l => l.label.includes('👤'));
+      const sourcer = links.find(l => l.label.includes('👥'));
+      const hiringMgr = links.find(l => l.label.includes('🎖'));
       return [
         m.matchScore,
         m.company,
@@ -1683,7 +1758,10 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
         m.careersUrl || '',
         ats ? ats.url : '',
         google ? google.url : '',
-        linkedin ? linkedin.url : '',
+        linkedinJobs ? linkedinJobs.url : '',
+        techRec ? techRec.url : '',
+        sourcer ? sourcer.url : '',
+        hiringMgr ? hiringMgr.url : '',
         (m.tags || []).join(' | '),
         m.matchReason
       ];
@@ -1692,7 +1770,7 @@ Output ONLY the JSON array, no markdown, no prose, no code fences.`;
       r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')
     ).join('\n');
 
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }); // BOM for Excel
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

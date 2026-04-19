@@ -22,11 +22,15 @@ Built with an Editorial/magazine aesthetic. Runs entirely in your browser. No se
 - Feed a resume into Claude (Anthropic API) → get a curated list of 5–25 US companies hiring for matching roles
 - Filter by **target positions** (OR filter, e.g. `Product Manager, Senior PM, Product Owner`)
 - Filter by **free-form keywords** (e.g. `Japanese speaking`, `remote only`, `Series B+`, `visa sponsorship`)
-- Each result includes **4 direct job-search links**:
+- Each result includes **job-search links**:
   - 🎯 **ATS-native search** — Greenhouse / Lever / Ashby / Workday filtered URLs (most reliable)
   - 🔎 **Google site-search** — `site:careers.company.com (position OR position) keywords`
   - 💼 **LinkedIn Jobs search**
   - 🏠 **Company careers homepage** (fallback)
+- **Recruiter Outreach links** for every match (all open LinkedIn people search with pre-filled queries):
+  - 👤 **Tech Recruiters** — technical / engineering recruiters at the company
+  - 👥 **Sourcers & TA** — recruiting coordinators and talent acquisition
+  - 🎖 **Hiring Managers** — position-aware (EMs for SWE roles, PM leads for PM roles, etc.)
 - One-click "Open All Google Searches" to mass-open targets
 - CSV export with all links + metadata
 
