@@ -9,7 +9,7 @@ A two-part system for efficient US tech job applications:
 Built with an Editorial/magazine aesthetic. Runs entirely in your browser. No server, no telemetry, no account.
 
 📖 **New here?** Read the [Product Requirements Document](docs/PRD.md) for the origin story, target user clusters (Zone × Pattern framework), and roadmap.
-
+- 📚 [Engineering Handbook](docs/handbook/README.md) — Complete technical guide (12 chapters)
 ---
 
 ## Features
